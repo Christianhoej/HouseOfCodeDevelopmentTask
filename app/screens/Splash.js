@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, Image, SafeAreaView} from 'react-native';
+import LottieView from 'lottie-react-native';
+
 import auth from '@react-native-firebase/auth';
+
+import styles from '../utils/styles'
 
 const Splash = ({navigation}) => {
   // Set an initializing state whilst Firebase connects
@@ -15,7 +19,7 @@ const Splash = ({navigation}) => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    auth().onAuthStateChanged(function(user) {
+     auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
         navigation.replace('Home');
@@ -23,21 +27,30 @@ const Splash = ({navigation}) => {
         // No user is signed in.
         navigation.replace('Login');
       }
-      });
+      }); 
 
-      return subscriber;
-
-    
+    return subscriber;
   }, []);
 
   if (initializing) return null;
 
- 
   return (
-    <View>
-      <Text>HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEJ</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Image
+        style={styles.logoContainer}
+        //source={require('../files/Crowdship_logo.png')}
+        source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
+      />
+      <View style={styles.lottieContainer}>
+        <LottieView
+          source={require('../files/loader.json')}
+          autoPlay
+          //loop
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default Splash;
+

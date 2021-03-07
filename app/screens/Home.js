@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
-
 import {View, Text, Button} from 'react-native';
-
 import auth from '@react-native-firebase/auth';
 
-
 const Home = ({navigation}) => {
-
   async function logout() {
     try {
       auth()
@@ -16,7 +12,6 @@ const Home = ({navigation}) => {
       console.log('Logout fejl');
     }
   }
-
 
   return (
     <View>
