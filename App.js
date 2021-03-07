@@ -48,17 +48,27 @@ const App = () => {
   return (
     <NavigationContainer>
       {
-        <Stack.Navigator
-          >
+        <Stack.Navigator>
           <Stack.Screen
             name="Splash"
             component={Splash}
             options={{cardStyleInterpolator: forFade}}
           />
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{headerShown: false}}
           />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-          <Stack.Screen name="OpenChatRoom" component={OpenChatRoom} options={{ title: '' }}/>
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="OpenChatRoom"
+            component={OpenChatRoom}
+            options={{title: ''}}
+          />
         </Stack.Navigator>
       }
     </NavigationContainer>

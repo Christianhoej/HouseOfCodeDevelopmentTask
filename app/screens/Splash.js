@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 
 import auth from '@react-native-firebase/auth';
 
-import styles from '../utils/styles'
+import globalStyles from '../utils/globalStyles'
 
 const Splash = ({navigation}) => {
   // Set an initializing state whilst Firebase connects
@@ -35,13 +35,13 @@ const Splash = ({navigation}) => {
   if (initializing) return null;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={globalStyles.container}>
       <Image
-        style={styles.logoContainer}
+        style={globalStyles.logoContainer}
         //source={require('../files/Crowdship_logo.png')}
         source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
       />
-      <View style={styles.lottieContainer}>
+      <View style={globalStyles.lottieContainer}>
         <LottieView
           source={require('../files/loader.json')}
           autoPlay
