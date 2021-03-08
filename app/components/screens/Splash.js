@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 
 import auth from '@react-native-firebase/auth';
 
-import globalStyles from '../utils/globalStyles'
+import globalStyles from '../../utils/globalStyles'
 
 const Splash = ({navigation}) => {
   // Set an initializing state whilst Firebase connects
@@ -43,7 +43,7 @@ const Splash = ({navigation}) => {
       />
       <View style={globalStyles.lottieContainer}>
         <LottieView
-          source={require('../files/loader.json')}
+          source={require('../../files/loader.json')}
           autoPlay
           //loop
         />

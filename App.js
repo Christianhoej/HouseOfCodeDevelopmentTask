@@ -5,12 +5,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {BackHandler, ToastAndroid} from 'react-native';
 
-import Home from './app/screens/Home';
-import Login from './app/screens/Login';
-import OpenChatRoom from './app/screens/OpenChatRoom';
-import Splash from './app/screens/Splash';
+import Home from './app/components/screens/Home';
+import Login from './app/components/screens/Login';
+import OpenChatRoom from './app/components/screens/OpenChatRoom';
+import Splash from './app/components/screens/Splash';
 
 import {GoogleSignin} from '@react-native-community/google-signin';
+import GlobalStyles from './app/utils/globalStyles'
 
 GoogleSignin.configure({
   webClientId:
@@ -48,7 +49,7 @@ const App = () => {
   return (
     <NavigationContainer>
       {
-        <Stack.Navigator>
+        <Stack.Navigator >
           <Stack.Screen
             name="Splash"
             component={Splash}
