@@ -1,17 +1,15 @@
 import { StyleSheet } from 'react-native';
-
+import {COLORS} from './colours'
 export default StyleSheet.create({
     screenContainer: {
         flex: 1,
         flexDirection: 'column',
         //justifyContent: 'center',
         //alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: COLORS.grey,
       },
     
       logoContainer: {
-        flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         height: null,
         width: '90%',
@@ -35,4 +33,9 @@ export default StyleSheet.create({
         width: '80%',
         resizeMode: 'contain',
       },
+      buttonText: {
+        fontSize: 25
+      }
+
+      
 });

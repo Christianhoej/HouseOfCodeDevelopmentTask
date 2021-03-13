@@ -50,40 +50,19 @@ const Home = ({navigation}) => {
   }
 
   //https://css-tricks.com/building-a-real-time-chat-app-with-react-and-firebase/
-/*   useEffect(() => {
-    try {
-      const onValueChange = database()
-        .ref(`/chatrooms`)
-        .on('value', (snapshot) => {
-          let chats = [];
-          snapshot.forEach((snap) => {
-            chats.push(snap.val());
-          });
-          setChatrooms(chats);
-        });
-        console.log("ONVALUECHANGE" + onValueChange);
-    } catch (error) {
-      console.log('FEJL I CHATROOMS');
-    }
-    // Stop listening for updates when no longer required
-    return;
-  }, []); */
-
   useEffect(() => {
     const subscriber = firestore()
       .collection('chatrooms')
-      //.get()
-      .onSnapshot(querySnapshot => {
-        console.log('Total chatrooms: ', querySnapshot.size);
-        console.log('chatrooms: ', querySnapshot);
-        let chats = [];
+      .doc('Random Room')
+      .collection("messages")
+      .get()
+      .then(querySnapshot => {
+        console.log('Total messages: ', querySnapshot.size);
+    
         querySnapshot.forEach(documentSnapshot => {
           console.log('Message ID: ', documentSnapshot.id, documentSnapshot.data());
-          console.log(documentSnapshot.data().Description);
-
-          chats.push(documentSnapshot)
+          console.log(documentSnapshot.data().text);
         });
-        setChatrooms(chats)
       });
       /* .get().then(documentSnapshot => {
         console.log('User data: ', documentSnapshot.data());
@@ -97,66 +76,49 @@ const Home = ({navigation}) => {
     //let room = event.target;
     setopenedChatroom(openedChatroom)
     console.log('ROOM' + openedChatroom.name);
-    navigation.navigate('OpenChatRoom', {chatroomName: openedChatroom.id});
+    navigation.navigate('OpenChatRoom', {chatroomName: openedChatroom.name});
   };
 
+  const dummy = useRef();
+  const chatroomsRef = firestore().collection('chatrooms').doc('Football');
+  //const query = chatroomsRef.orderBy('createdAt', 'desc').limit(50);
 
+  /* const [chatrooms2] = useCollectionData(query, { idField: 'id' });
 
+  const [formValue, setFormValue] = useState(''); */
 
-  /* const dummy = useRef();
-  const chatroomsRef = firestore.collection('chatrooms');
-  const query = chatroomsRef.orderBy('createdAt').limit(50);
-
-  const [chatrooms2] = useCollectionData(query, { idField: 'id' });
-
-  const [formValue, setFormValue] = useState('');
- */
   return (
     <SafeAreaView style={GlobalStyles.screenContainer}>
-      <ScrollView
+{/*       <ScrollView
         style={styles.scrollView}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        {/* <Text>HEJ</Text> */}
-        {chatrooms.map((chats, i) => (
-          <SafeAreaView style={styles.listItem}>
-            <View style={styles.listItemInner}>
-              <Text>{chats.id}</Text>
-              <Text>{chats.data().Description}</Text>
-            </View>
-            <View style={styles.icon}>
-              <Button title="Go to chatroom" onPress={() => openChatroom(chats)} />
 
-              {/* <Image
-            
-            source={require('../files/baseline_chevron_right_black_18dp.png')}
-            //source={{ uri: 'https://i.ibb.co/1fg7ycM/Crowdship-logo.png' }}
-          /> */}
-            </View>
-          </SafeAreaView>
-        ))}
+     <View>
+        {chatrooms2 && chatrooms2.map(msg => <ChatMessage key={msg.id} chatrooms2={msg} />)}
+      </View>
+      </ScrollView> */}
 
-<Button title="Log out" onPress={() => logout()} />
-        {/* <ChatRoomListItem key={chats.name} name={chats.name} description={chats.description}/> */}
-      </ScrollView>
+    
 
-      {/* <Button
-        title="Go to chatroom"
-        onPress={() => navigation.navigate('OpenChatRoom')}
-      />
-      */}
-      <Button
-        title="Add Chatroom"
-        onPress={() => addChatroom('Football', "Let's talk about football!")}
-      /> 
-
-
+ 
     </SafeAreaView>
   );
 };
 
+function ChatMessage(props) {
+  const { text, uid, photoURL } = props.chatrooms2;
 
+  //const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+
+  return (<>
+    <View >
+      
+      <Text>{text}</Text>
+    </View>
+  </>)
+}
 export default Home;
 
 const styles = StyleSheet.create({

@@ -7,11 +7,17 @@ import {
   Text,
   StatusBar,
   Button,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
+
+import {COLORS} from '../../utils/colours'
 
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
+
+import globalStyles from '../../utils/globalStyles';
 
 const Login = () => {
   const [initializing, setInitializing] = useState(true);
@@ -43,7 +49,7 @@ const Login = () => {
 
       if (result.isCancelled) {
         throw 'User cancelled the login process';
-        console.log("User cancelled the login process");
+        console.log('User cancelled the login process');
       }
 
       // Once signed in, get the users AccesToken
@@ -51,7 +57,7 @@ const Login = () => {
 
       if (!data) {
         throw 'Something went wrong obtaining access token';
-        console.log("Something went wrong obtaining access token");
+        console.log('Something went wrong obtaining access token');
       }
 
       // Create a Firebase credential with the AccessToken
@@ -77,14 +83,52 @@ const Login = () => {
   if (initializing) return null;
 
   return (
-    <View>
-      <Text>Login</Text>
-      <Button title="Google Sign-In" onPress={() => onGoogleButtonPress()} />
-      <Button
+    <SafeAreaView style={globalStyles.screenContainer}>
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          title="Google Sign-In"
+          onPress={() => onGoogleButtonPress()}
+          style={styles.buttonStyle}
+        >
+        <Text style={globalStyles.buttonText}>Sign in with Google</Text>
+
+        </TouchableOpacity>
+      
+      <TouchableOpacity
         title="Facebook Sign-In"
         onPress={() => onFacebookButtonPress()}
-      />
-    </View>
+        style={styles.buttonStyle}>
+        <Text style={globalStyles.buttonText}>Sign in with Facebook</Text>
+      </TouchableOpacity>
+      </View>
+      <View>
+        <Image
+          style={globalStyles.logoContainer}
+          //source={require('../files/Crowdship_logo.png')}
+          source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 export default Login;
+
+const styles = StyleSheet.create({
+  buttonView: {
+    marginTop: 30,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  buttonStyle: {
+    /* borderWidth: 2,
+    borderColor: 'grey', */
+    fontSize: 50,
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    backgroundColor: COLORS.yellow
+  }
+  
+});

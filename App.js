@@ -9,6 +9,8 @@ import Home from './app/components/screens/Home';
 import Login from './app/components/screens/Login';
 import OpenChatRoom from './app/components/screens/OpenChatRoom';
 import Splash from './app/components/screens/Splash';
+import Test from './app/components/screens/Test';
+
 
 import {GoogleSignin} from '@react-native-community/google-signin';
 import GlobalStyles from './app/utils/globalStyles'
@@ -53,11 +55,16 @@ const App = () => {
           <Stack.Screen
             name="Splash"
             component={Splash}
-            options={{cardStyleInterpolator: forFade}}
+            options={{cardStyleInterpolator: forFade, headerShown: false}}
           />
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Test"
+            component={Test}
             options={{headerShown: false}}
           />
           <Stack.Screen

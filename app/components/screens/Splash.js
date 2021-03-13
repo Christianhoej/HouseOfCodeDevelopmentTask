@@ -20,13 +20,13 @@ const Splash = ({navigation}) => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
      auth().onAuthStateChanged(function(user) {
-      if (user) {
+       if (user) {
         // User is signed in.
         navigation.replace('Home');
       } else {
         // No user is signed in.
         navigation.replace('Login');
-      }
+      } 
       }); 
 
     return subscriber;
@@ -35,19 +35,17 @@ const Splash = ({navigation}) => {
   if (initializing) return null;
 
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <Image
+    <SafeAreaView style={globalStyles.screenContainer}>
+       <Image
         style={globalStyles.logoContainer}
         //source={require('../files/Crowdship_logo.png')}
         source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
       />
-      <View style={globalStyles.lottieContainer}>
         <LottieView
           source={require('../../files/loader.json')}
           autoPlay
           //loop
         />
-      </View>
     </SafeAreaView>
   );
 };
