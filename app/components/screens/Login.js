@@ -22,6 +22,8 @@ import globalStyles from '../../utils/globalStyles';
 const Login = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const googleText = "Sign in with Google"
+  const facebookText = "Sign in with Facebook"
 
   function onAuthStateChanged(user) {
     setUser(user);
@@ -90,15 +92,14 @@ const Login = () => {
           onPress={() => onGoogleButtonPress()}
           style={styles.buttonStyle}
         >
-        <Text style={globalStyles.buttonText}>Sign in with Google</Text>
-
+        <Text style={globalStyles.buttonText}>{googleText}</Text>
         </TouchableOpacity>
       
       <TouchableOpacity
         title="Facebook Sign-In"
         onPress={() => onFacebookButtonPress()}
         style={styles.buttonStyle}>
-        <Text style={globalStyles.buttonText}>Sign in with Facebook</Text>
+        <Text style={globalStyles.buttonText}>{facebookText}</Text>
       </TouchableOpacity>
       </View>
       <View>

@@ -6,7 +6,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         //justifyContent: 'center',
         //alignItems: 'center',
-        backgroundColor: COLORS.grey,
+        backgroundColor: COLORS.white,
       },
     
       logoContainer: {

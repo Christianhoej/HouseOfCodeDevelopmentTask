@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState, useRef } from 'react';
+import React, {Component, useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,16 +7,21 @@ import {
   ScrollView,
   StyleSheet,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {useCollectionData} from 'react-firebase-hooks/firestore';
 import firestore from '@react-native-firebase/firestore';
+
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import ChatRoomListItem from '../chatroomListItem';
 
 import GlobalStyles from '../../utils/globalStyles';
+import {grey} from '@material-ui/core/colors';
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -50,7 +55,7 @@ const Home = ({navigation}) => {
   }
 
   //https://css-tricks.com/building-a-real-time-chat-app-with-react-and-firebase/
-/*   useEffect(() => {
+  /*   useEffect(() => {
     try {
       const onValueChange = database()
         .ref(`/chatrooms`)
@@ -70,38 +75,38 @@ const Home = ({navigation}) => {
   }, []); */
 
   useEffect(() => {
+    getChatrooms();
+  }, []);
+
+  async function getChatrooms() {
     const subscriber = firestore()
       .collection('chatrooms')
+      .orderBy('LastMessage', 'desc')
       //.get()
-      .onSnapshot(querySnapshot => {
+      .onSnapshot((querySnapshot) => {
         console.log('Total chatrooms: ', querySnapshot.size);
         console.log('chatrooms: ', querySnapshot);
         let chats = [];
-        querySnapshot.forEach(documentSnapshot => {
-          console.log('Message ID: ', documentSnapshot.id, documentSnapshot.data());
+        querySnapshot.forEach((documentSnapshot) => {
+          console.log(
+            'Message ID: ',
+            documentSnapshot.id,
+            documentSnapshot.data(),
+          );
           console.log(documentSnapshot.data().Description);
 
-          chats.push(documentSnapshot)
+          chats.push(documentSnapshot);
         });
-        setChatrooms(chats)
+        setChatrooms(chats);
       });
-      /* .get().then(documentSnapshot => {
-        console.log('User data: ', documentSnapshot.data());
-      }); */
-
-    // Stop listening for updates when no longer required
-    //return () => subscriber();
-  }, []);
+  }
 
   const openChatroom = (openedChatroom) => {
     //let room = event.target;
-    setopenedChatroom(openedChatroom)
+    setopenedChatroom(openedChatroom);
     console.log('ROOM' + openedChatroom.name);
     navigation.navigate('OpenChatRoom', {chatroomName: openedChatroom.id});
   };
-
-
-
 
   /* const dummy = useRef();
   const chatroomsRef = firestore.collection('chatrooms');
@@ -120,24 +125,25 @@ const Home = ({navigation}) => {
         }>
         {/* <Text>HEJ</Text> */}
         {chatrooms.map((chats, i) => (
-          <SafeAreaView style={styles.listItem}>
+          <>
+          <TouchableOpacity
+            onPress={() => openChatroom(chats)}
+            style={styles.listItem}>
             <View style={styles.listItemInner}>
-              <Text>{chats.id}</Text>
+              <Text style={styles.chatroomTitle}>{chats.id}</Text>
               <Text>{chats.data().Description}</Text>
             </View>
             <View style={styles.icon}>
-              <Button title="Go to chatroom" onPress={() => openChatroom(chats)} />
-
-              {/* <Image
-            
-            source={require('../files/baseline_chevron_right_black_18dp.png')}
-            //source={{ uri: 'https://i.ibb.co/1fg7ycM/Crowdship-logo.png' }}
-          /> */}
+              <FontAwesomeIcon name="chevron-right" size={20} />
             </View>
-          </SafeAreaView>
+            
+          </TouchableOpacity>
+          <View style={styles.border}>
+            </View>
+            </>
         ))}
 
-<Button title="Log out" onPress={() => logout()} />
+        {/*         <Button title="Log out" onPress={() => logout()} /> */}
         {/* <ChatRoomListItem key={chats.name} name={chats.name} description={chats.description}/> */}
       </ScrollView>
 
@@ -146,16 +152,13 @@ const Home = ({navigation}) => {
         onPress={() => navigation.navigate('OpenChatRoom')}
       />
       */}
-      <Button
+      {/* <Button
         title="Add Chatroom"
         onPress={() => addChatroom('Football', "Let's talk about football!")}
-      /> 
-
-
+      /> */}
     </SafeAreaView>
   );
 };
-
 
 export default Home;
 
@@ -165,19 +168,24 @@ const styles = StyleSheet.create({
   },
   listItem: {
     flex: 1,
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   listItemInner: {
-    flex: 0.5,
+    flex: 0.9,
     flexDirection: 'column',
-    backgroundColor: '#00a3da',
   },
   icon: {
-    flex: 0.5,
+    flex: 0.1,
     alignItems: 'flex-end',
-    backgroundColor: '#0342da',
+  },
+  chatroomTitle: {
+    fontSize: 27,
+  },
+  border: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
   },
 });
