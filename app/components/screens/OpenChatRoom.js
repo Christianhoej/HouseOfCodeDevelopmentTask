@@ -8,6 +8,7 @@ import {
   StyleSheet,
   RefreshControl,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
@@ -20,6 +21,9 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
 import GlobalStyles from '../../utils/globalStyles';
+import {Dimensions} from 'react-native';
+
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const OpenChatroom = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
@@ -27,6 +31,9 @@ const OpenChatroom = ({route, navigation}) => {
   const [inputText, setInputText] = useState();
 
   const scrollRef = useRef();
+
+  const deviceWidth = Dimensions.get('window').width;
+
   //  const navigation = useNavigation();
   const {chatroomName} = route.params;
   function getTimestamp() {
@@ -86,9 +93,9 @@ const OpenChatroom = ({route, navigation}) => {
         .doc(chatroomName)
         .collection('messages')
         .add({
-          sender: 'test@test.sk', //auth().currentUser.email,
+          sender: auth().currentUser.email,
           created: firebase.firestore.FieldValue.serverTimestamp(),
-          text: 'TEST2222',
+          text: text,
           avatar: auth().currentUser.photoURL,
         })
         .then(() => {
@@ -138,51 +145,72 @@ const OpenChatroom = ({route, navigation}) => {
   const messageStyle = 'TEST';
 
   return (
-    <>
-      <ScrollView
-        style={GlobalStyles.screenContainer}
-        ref={scrollRef}
-        onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}
+    <SafeAreaView style={GlobalStyles.screenContainer}>
+      <View style={styles.messagesView}>
+        <ScrollView
+          ref={scrollRef}
+          onContentSizeChange={() =>
+            scrollRef.current.scrollToEnd({animated: true})
+          }>
+          {messages.map((chat, i) => (
+            <View>
+              <View>
+                <Text>HEJ</Text>
+              </View>
+              <View
+                style={[
+                  isMyMessage(chat.data().sender)
+                    ? styles.messageSent
+                    : styles.messageRecieved,
+                ]}>
+                <Text>{chat.id}</Text>
+                <Text>{chat.data().sender}</Text>
+                <Text>{chat.data().text}</Text>
 
-        >
-        {messages.map((chat, i) => (
-          /*           <SafeAreaView style={styles.listItem}>
-           */ <View
-            style={[
-              isMyMessage(chat.data().sender)
-                ? styles.messageSent
-                : styles.messageRecieved,
-            ]}>
-            <Text>{chat.id}</Text>
-            <Text>{chat.data().sender}</Text>
-          </View>
-          /*           </SafeAreaView>
-           */
-        ))}
-        <Button
-          title="Add Message"
-          onPress={() => addMessage('Christian Høj')}
-        />
+                {/* <Text>{chat.data().created.toDate()}</Text> */}
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+      <View style={styles.keyboardView}>
+        <TouchableOpacity
+          onPress={() => openChatroom(chats)}
+          style={styles.cameraIcon}>
+          <FontAwesomeIcon name="camera" size={30} color={COLORS.lightBlue} />
+        </TouchableOpacity>
 
-        {/* <View ref={dummy}></View> */}
-      </ScrollView>
-      <View>
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          style={styles.textInputField}
           value={inputText}
           onChangeText={(text) => {
             setInputText({text}), console.log(text), console.log(inputText);
           }}
+          //onSubmitEditing={addMessage('Christian Høj')}
         />
+        <TouchableOpacity
+          onPress={() => addMessage(inputText.text)}
+          style={styles.textInputButton}>
+          <FontAwesomeIcon name="send-o" size={30} color={COLORS.lightBlue} />
+        </TouchableOpacity>
+        {/*  <Button
+          style={styles.textInputButton}
+          title="Send"
+          onPress={() => addMessage('Christian Høj')}
+        /> */}
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 export default OpenChatroom;
 
 const styles = StyleSheet.create({
+  messagesView: {
+    marginBottom: 50,
+    flex: 12,
+  },
+
   scrollView: {
-    marginTop: 20,
     flex: 1,
   },
   messageRecieved: {
@@ -192,8 +220,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     padding: 10,
     marginTop: 10,
+    borderRadius: 10,
   },
-
   messageSent: {
     backgroundColor: COLORS.green,
     alignItems: 'flex-end',
@@ -201,22 +229,42 @@ const styles = StyleSheet.create({
     marginLeft: 100,
     padding: 10,
     marginTop: 10,
+    borderRadius: 10,
   },
-
   listItem: {
     flex: 1,
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   listItemInner: {
     flex: 0.5,
     flexDirection: 'column',
   },
-  icon: {
-    flex: 0.5,
-    alignItems: 'flex-end',
-    backgroundColor: '#0342da',
+  keyboardView: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    position: 'absolute',
+    left: 5,
+    right: 5,
+    bottom: 5,
+
+    //width: Dimensions.get('window').width,
+  },
+  cameraIcon: {
+    justifyContent: 'center',
+    marginHorizontal: 10,
+  },
+  textInputField: {
+    /* height: 40, */
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    flex: 1,
+  },
+  textInputButton: {
+    justifyContent: 'center',
+    marginHorizontal: 10,
   },
 });
