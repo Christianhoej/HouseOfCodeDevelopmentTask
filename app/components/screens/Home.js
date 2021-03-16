@@ -100,7 +100,6 @@ const Home = ({navigation}) => {
         setChatrooms(chats);
       });
   }
-
   const openChatroom = (openedChatroom) => {
     //let room = event.target;
     setopenedChatroom(openedChatroom);

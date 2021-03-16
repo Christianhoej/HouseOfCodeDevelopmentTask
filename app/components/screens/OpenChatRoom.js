@@ -25,6 +25,9 @@ import {Dimensions} from 'react-native';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
+import SentMessage from '../SentMessage';
+import RecievedMessage from '../RecievedMessage';
+
 const OpenChatroom = ({route, navigation}) => {
   const [messages, setMessages] = useState([]);
   const [timestamp, setTimestamp] = useState();
@@ -129,7 +132,6 @@ const OpenChatroom = ({route, navigation}) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        //setPhoto(data.secure_url)
       })
       .catch((err) => {
         Alert.alert('An Error Occured While Uploading');
@@ -140,24 +142,23 @@ const OpenChatroom = ({route, navigation}) => {
     return auth().currentUser.email === email;
   };
 
-  //const messageClass = auth().currentUser.email === auth.currentUser.uid ? 'sent' : 'received';
-
-  const messageStyle = 'TEST';
-
   return (
     <SafeAreaView style={GlobalStyles.screenContainer}>
-      <View style={styles.messagesView}>
+      <View style={styles.scrollView}>
         <ScrollView
           ref={scrollRef}
           onContentSizeChange={() =>
             scrollRef.current.scrollToEnd({animated: true})
           }>
           {messages.map((chat, i) => (
-            <View>
-              <View>
-                <Text>HEJ</Text>
-              </View>
-              <View
+            <View style={styles.messagesView}>
+ 
+
+              {isMyMessage(chat.data().sender)
+                    ? <SentMessage chat={chat}></SentMessage>
+                    : <RecievedMessage chat={chat}></RecievedMessage>}
+              
+              {/* <View
                 style={[
                   isMyMessage(chat.data().sender)
                     ? styles.messageSent
@@ -166,9 +167,7 @@ const OpenChatroom = ({route, navigation}) => {
                 <Text>{chat.id}</Text>
                 <Text>{chat.data().sender}</Text>
                 <Text>{chat.data().text}</Text>
-
-                {/* <Text>{chat.data().created.toDate()}</Text> */}
-              </View>
+              </View> */}
             </View>
           ))}
         </ScrollView>
@@ -206,12 +205,16 @@ export default OpenChatroom;
 
 const styles = StyleSheet.create({
   messagesView: {
-    marginBottom: 50,
-    flex: 12,
+    flex: 1,
+    flexDirection: 'column',
+  },
+  avatarView: {
+    flexDirection: 'column',
   },
 
   scrollView: {
-    flex: 1,
+    marginBottom: 50,
+    flex: 12,
   },
   messageRecieved: {
     alignItems: 'flex-start',

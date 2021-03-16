@@ -35,7 +35,20 @@ export default StyleSheet.create({
       },
       buttonText: {
         fontSize: 25
-      }
+      },
+      avatar: {
+        width: 35,
+        height: 35,
+        borderRadius: 10
+      },
+      iconView: {
+        flex: 1,
+        alignSelf: 'center',
+        alignItems: 'center',
+      },
+      dateText: {
+        fontSize: 10
+      },
 
       
 });
