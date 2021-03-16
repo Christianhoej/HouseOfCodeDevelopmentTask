@@ -71,17 +71,17 @@ const OpenChatroom = ({route, navigation}) => {
           console.log('Messages: ', querySnapshot);
           let chats = [];
           querySnapshot.forEach((documentSnapshot) => {
-            console.log(
+            /* console.log(
               'Message ID: ',
               documentSnapshot.id,
               documentSnapshot.data(),
-            );
-            console.log(documentSnapshot.data().Description);
+            ); */
+            //console.log(documentSnapshot.data().Description);
 
             chats.push(documentSnapshot);
           });
           setMessages(chats);
-          console.log('CHAATS: ' + chats);
+          //console.log('CHAATS: ' + chats);
         });
     } catch (error) {
       console.log(error);
@@ -144,6 +144,10 @@ const OpenChatroom = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={GlobalStyles.screenContainer}>
+       <Button
+          title="Send"
+          onPress={() => addMessage('Dette er en testbesked')}
+        /> 
       <View style={styles.scrollView}>
         <ScrollView
           ref={scrollRef}
@@ -157,19 +161,9 @@ const OpenChatroom = ({route, navigation}) => {
               {isMyMessage(chat.data().sender)
                     ? <SentMessage chat={chat}></SentMessage>
                     : <RecievedMessage chat={chat}></RecievedMessage>}
-              
-              {/* <View
-                style={[
-                  isMyMessage(chat.data().sender)
-                    ? styles.messageSent
-                    : styles.messageRecieved,
-                ]}>
-                <Text>{chat.id}</Text>
-                <Text>{chat.data().sender}</Text>
-                <Text>{chat.data().text}</Text>
-              </View> */}
             </View>
           ))}
+         
         </ScrollView>
       </View>
       <View style={styles.keyboardView}>
@@ -192,11 +186,7 @@ const OpenChatroom = ({route, navigation}) => {
           style={styles.textInputButton}>
           <FontAwesomeIcon name="send-o" size={30} color={COLORS.lightBlue} />
         </TouchableOpacity>
-        {/*  <Button
-          style={styles.textInputButton}
-          title="Send"
-          onPress={() => addMessage('Christian Høj')}
-        /> */}
+          
       </View>
     </SafeAreaView>
   );

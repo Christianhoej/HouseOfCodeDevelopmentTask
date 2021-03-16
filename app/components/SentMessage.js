@@ -19,8 +19,24 @@ import GlobalStyles from '../utils/globalStyles';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Message = (props, cssGroup) => {
-  useEffect(() => {}, []);
+  const [date, setDate] = useState();
 
+  useEffect(() => {
+    getDate(props.chat.data().created)
+  }, []);
+
+  async function getDate(timestamp){
+    try {
+      var newDate = timestamp.toDate().toString()
+    setDate(newDate)
+    return
+    } catch (error) {
+      setDate(firebase.firestore.FieldValue.serverTimestamp())
+      console.log(error);
+    }
+    
+    
+  }
   return (
 <View style={styles.messageSent}>
       
@@ -28,7 +44,7 @@ const Message = (props, cssGroup) => {
       <View style={styles.messageItem}>
         <Text style={GlobalStyles.dateText}>{props.chat.data().sender}</Text>
         <Text style={styles.messageText}>{props.chat.data().text}</Text>
-        <Text style={GlobalStyles.dateText}>{props.chat.data().created.toDate().toString()}</Text>
+         <Text style={GlobalStyles.dateText}>{date}</Text> 
 
       </View>
       <View style={GlobalStyles.iconView}>

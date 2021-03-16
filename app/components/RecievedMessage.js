@@ -20,13 +20,16 @@ import firestore from '@react-native-firebase/firestore';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const RecievedMessage = (props, cssGroup) => {
-  useEffect(() => {}, []);
+  const [date, setDate] = useState();
 
-  function getDate(timestamp) {
-  //var newDate = new Date(timestamp).toISOString()
-  var newDate = new firestore.Timestamp().toDate(timestamp)
-  
-  return newDate
+  useEffect(() => {
+    getDate(props.chat.data().created)
+  }, []);
+
+  async function getDate(timestamp){
+    var newDate = timestamp.toDate().toString()
+    setDate(newDate)
+    return
   }
   return (
     <View style={styles.messageRecieved}>
@@ -43,7 +46,7 @@ const RecievedMessage = (props, cssGroup) => {
         {/* <Text>{props.chat.id}</Text> */}
         <Text style={GlobalStyles.dateText}>{props.chat.data().sender}</Text>
         <Text style={styles.messageText}>{props.chat.data().text}</Text>
-        <Text style={GlobalStyles.dateText}>{props.chat.data().created.toDate().toString()}</Text>
+        <Text style={GlobalStyles.dateText}>{date}</Text>
 
       </View>
     </View>
