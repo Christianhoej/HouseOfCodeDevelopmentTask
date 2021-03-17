@@ -16,8 +16,6 @@ import database from '@react-native-firebase/database';
 import {COLORS} from '../../utils/colours';
 
 import ImagePicker from 'react-native-image-crop-picker';
-//import * as ImagePicker from "react-native-image-picker"
-//import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import ChatRoomListItem from '../chatroomListItem';
 import {useNavigation} from '@react-navigation/native';
@@ -42,10 +40,7 @@ const OpenChatroom = ({route, navigation}) => {
   );
 
   const scrollRef = useRef();
-
   const deviceWidth = Dimensions.get('window').width;
-
-  //  const navigation = useNavigation();
   const {chatroomName} = route.params;
 
   useEffect(() => {
@@ -61,24 +56,15 @@ const OpenChatroom = ({route, navigation}) => {
         .doc(chatroomName)
         .collection('messages')
         .orderBy('created')
-        //.orderBy('date', 'desc')
-        //.get()
+
         .onSnapshot((querySnapshot) => {
           console.log('Total messages: ', querySnapshot.size);
           console.log('Messages: ', querySnapshot);
           let chats = [];
           querySnapshot.forEach((documentSnapshot) => {
-            /* console.log(
-              'Message ID: ',
-              documentSnapshot.id,
-              documentSnapshot.data(),
-            ); */
-            //console.log(documentSnapshot.data().Description);
-
             chats.push(documentSnapshot);
           });
           setMessages(chats);
-          //console.log('CHAATS: ' + chats);
         });
     } catch (error) {
       console.log(error);
@@ -107,11 +93,6 @@ const OpenChatroom = ({route, navigation}) => {
         .update({LastMessage: firebase.firestore.FieldValue.serverTimestamp()});
 
       setInputText('');
-
-      /* scrollRef.current?.scrollTo({
-        y: 0,
-        animated: true,
-      }); */
     } catch (error) {
       console.log(error);
     }
@@ -135,52 +116,22 @@ const OpenChatroom = ({route, navigation}) => {
       });
   };
 
-  /*   const selectPhotoTapped = () => {
-    const options = {
-      title: 'Select Photo',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    launchCamera(options, (response) => {
-
-      console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        const uri = response.uri;
-        const type = response.type;
-        const name = response.fileName;
-        const source = {
-          uri,
-          type,
-          name,
-        }
-      }
-    });
-  } */
   const takePhoto = () => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
       includeBase64: true,
-      //includeBase64: true
-      //cropping: true,
     }).then((image) => {
-      //console.log(image);
       setImage(image.path);
       var newFile = {
         name: 'test.jpg',
         type: 'image/jpeg',
         uri: image.path,
       };
-      setPhoto(image.path)
+      setPhoto(image.path);
       console.log(newFile);
       console.log(photo);
-      //cloudinaryUpload(newFile);
+      cloudinaryUpload(newFile);
     });
   };
 
@@ -190,10 +141,6 @@ const OpenChatroom = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={GlobalStyles.screenContainer}>
-       <Button
-        title="Send"
-        onPress={() => cloudinaryUpload(photo)}
-      /> 
       <View style={styles.scrollView}>
         <ScrollView
           ref={scrollRef}
@@ -203,9 +150,9 @@ const OpenChatroom = ({route, navigation}) => {
           {messages.map((chat, i) => (
             <View style={styles.messagesView}>
               {isMyMessage(chat.data().sender) ? (
-                <SentMessage chat={chat}></SentMessage>
+                <SentMessage chat={chat} key={chat.id}></SentMessage>
               ) : (
-                <RecievedMessage chat={chat}></RecievedMessage>
+                <RecievedMessage chat={chat} key={chat.id}></RecievedMessage>
               )}
             </View>
           ))}
@@ -222,7 +169,6 @@ const OpenChatroom = ({route, navigation}) => {
           onChangeText={(text) => {
             setInputText({text}), console.log(text), console.log(inputText);
           }}
-          //onSubmitEditing={addMessage('Christian Høj')}
         />
         <TouchableOpacity
           onPress={() => addMessage(inputText.text)}
@@ -284,15 +230,12 @@ const styles = StyleSheet.create({
     left: 5,
     right: 5,
     bottom: 5,
-
-    //width: Dimensions.get('window').width,
   },
   cameraIcon: {
     justifyContent: 'center',
     marginHorizontal: 10,
   },
   textInputField: {
-    /* height: 40, */
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,

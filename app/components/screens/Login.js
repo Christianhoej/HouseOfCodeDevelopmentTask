@@ -2,22 +2,17 @@ import React, {Component, useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   Image,
   TouchableOpacity,
   Alert
 } from 'react-native';
 
 import {COLORS} from '../../utils/colours'
-
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
-
 import globalStyles from '../../utils/globalStyles';
 
 const Login = () => {
@@ -44,7 +39,6 @@ const Login = () => {
 
   async function onFacebookButtonPress() {
     try {
-      // Attempt login with permissions
       const result = await LoginManager.logInWithPermissions([
         'public_profile',
         'email',
@@ -55,7 +49,6 @@ const Login = () => {
         console.log('User cancelled the login process');
       }
 
-      // Once signed in, get the users AccesToken
       const data = await AccessToken.getCurrentAccessToken();
 
       if (!data) {
@@ -63,20 +56,16 @@ const Login = () => {
         console.log('Something went wrong obtaining access token');
       }
 
-      // Create a Firebase credential with the AccessToken
       const facebookCredential = auth.FacebookAuthProvider.credential(
         data.accessToken,
       );
 
       console.log('DATA' + facebookCredential);
-      // Sign-in the user with the credential
       return auth().signInWithCredential(facebookCredential);
-      //return auth().signInWithCredential(facebookCredential);
     } catch (error) {
       console.log('Facebook fejl');
       console.log(error);
       Alert.alert('An Error Occured At Login');
-
     }
   }
 
@@ -90,7 +79,6 @@ const Login = () => {
   return (
     <SafeAreaView style={globalStyles.screenContainer}>
       <Image
-        //source={require('../files/Crowdship_logo.png')}
         style = {globalStyles.logoContainer}
         source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
       />
@@ -113,7 +101,6 @@ const Login = () => {
       <View>
         <Image
           style={globalStyles.logoContainer}
-          //source={require('../files/Crowdship_logo.png')}
           source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
         />
       </View>
@@ -131,13 +118,11 @@ const styles = StyleSheet.create({
 
   },
   buttonStyle: {
-    /* borderWidth: 2,
-    borderColor: 'grey', */
     fontSize: 50,
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
-    backgroundColor: COLORS.yellow
+    backgroundColor: COLORS.lightBlue
   }
   
 });

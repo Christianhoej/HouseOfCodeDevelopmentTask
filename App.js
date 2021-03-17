@@ -13,7 +13,6 @@ import Test from './app/components/screens/Test';
 
 
 import {GoogleSignin} from '@react-native-community/google-signin';
-import GlobalStyles from './app/utils/globalStyles'
 
 GoogleSignin.configure({
   webClientId:

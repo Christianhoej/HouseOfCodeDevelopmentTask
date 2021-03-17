@@ -1,51 +1,32 @@
 import React, {Component, useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  RefreshControl,
-  TextInput,
-  TouchableOpacity,
-  Image
-} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
 import {COLORS} from '../utils/colours';
-
 import GlobalStyles from '../utils/globalStyles';
-
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Message = (props, cssGroup) => {
   const [date, setDate] = useState();
 
   useEffect(() => {
-    getDate(props.chat.data().created)
+    getDate(props.chat.data().created);
   }, []);
 
-  async function getDate(timestamp){
+  async function getDate(timestamp) {
     try {
-      var newDate = timestamp.toDate().toString()
-    setDate(newDate)
-    return
+      var newDate = timestamp.toDate().toString();
+      setDate(newDate);
+      return;
     } catch (error) {
-      setDate(firebase.firestore.FieldValue.serverTimestamp())
+      setDate(firebase.firestore.FieldValue.serverTimestamp());
       console.log(error);
     }
-    
-    
   }
   return (
-<View style={styles.messageSent}>
-      
-
+    <View style={styles.messageSent}>
       <View style={styles.messageItem}>
         <Text style={GlobalStyles.dateText}>{props.chat.data().sender}</Text>
         <Text style={styles.messageText}>{props.chat.data().text}</Text>
-         <Text style={GlobalStyles.dateText}>{date}</Text> 
-
+        <Text style={GlobalStyles.dateText}>{date}</Text>
       </View>
       <View style={GlobalStyles.iconView}>
         <Image
@@ -56,21 +37,6 @@ const Message = (props, cssGroup) => {
         />
       </View>
     </View>
-
-    
-     /* <View style={styles.messageSent}>
-      <View style={styles.messageItem}>
-        <Text>{props.chat.id}</Text>
-        <Text>{props.chat.data().sender}</Text>
-        <Text>{props.chat.data().text}</Text>
-      </View>
-      <View style={styles.iconView}>
-        <Image source={{
-          uri: props.chat.data().avatar,
-        }}
-        style={styles.avatar}/>
-      </View>
-    </View> */
   );
 };
 export default Message;
