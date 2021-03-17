@@ -9,6 +9,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import {COLORS} from '../../utils/colours'
@@ -74,6 +75,8 @@ const Login = () => {
     } catch (error) {
       console.log('Facebook fejl');
       console.log(error);
+      Alert.alert('An Error Occured At Login');
+
     }
   }
 
@@ -86,6 +89,11 @@ const Login = () => {
 
   return (
     <SafeAreaView style={globalStyles.screenContainer}>
+      <Image
+        //source={require('../files/Crowdship_logo.png')}
+        style = {globalStyles.logoContainer}
+        source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
+      />
       <View style={styles.buttonView}>
         <TouchableOpacity
           title="Google Sign-In"

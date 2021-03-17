@@ -34,7 +34,7 @@ const Home = ({navigation}) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    wait(2000).then(() => {setRefreshing(false), getChatrooms() });
   }, []);
 
   async function logout() {

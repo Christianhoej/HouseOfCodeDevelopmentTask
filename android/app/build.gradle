@@ -143,6 +143,8 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+
     }
     splits {
         abi {
@@ -190,7 +192,7 @@ android {
 }
 
 dependencies {
-implementation 'com.android.support:multidex:1.0.3'
+implementation 'com.android.support:multidex:2.0.1'
 
     implementation platform('com.google.firebase:firebase-bom:26.6.0')
 

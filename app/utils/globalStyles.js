@@ -10,10 +10,10 @@ export default StyleSheet.create({
       },
     
       logoContainer: {
-        alignItems: 'center',
-        height: null,
-        width: '90%',
-        resizeMode: 'contain',
+        
+          flex: 0.5,
+          marginTop: 100,
+      
       },
     
       lottieContainer: {

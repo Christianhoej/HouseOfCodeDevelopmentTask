@@ -37,13 +37,14 @@ const Splash = ({navigation}) => {
   return (
     <SafeAreaView style={globalStyles.screenContainer}>
        <Image
-        style={globalStyles.logoContainer}
         //source={require('../files/Crowdship_logo.png')}
+        style = {styles.image}
         source={{uri: 'https://i.ibb.co/pRkc665/Ho-C-logo-big.jpg'}}
       />
         <LottieView
           source={require('../../files/loader.json')}
           autoPlay
+          style= {styles.lottie}
           //loop
         />
     </SafeAreaView>
@@ -52,3 +53,14 @@ const Splash = ({navigation}) => {
 
 export default Splash;
 
+const styles = StyleSheet.create({
+  image: {
+    flex: 0.2,
+    marginTop: 100,
+  },
+  lottie: {
+    flex: 5,
+  
+  },
+  
+});
